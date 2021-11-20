@@ -9,7 +9,7 @@ public class ERS_user {
 	private String ers_password; 
 	private String user_first_name;
 	private String user_last_name;
-	private String user_email;
+	private String user_email;		//I think I'm going to use this as a hashing salt hehe.
 	private String user_role;
 	
 	
