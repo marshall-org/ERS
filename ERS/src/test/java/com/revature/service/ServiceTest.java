@@ -332,8 +332,66 @@ public class ServiceTest {
 	/**************************************************************BEGIN GET ALL REQUESTS TESTS**************************************/
 	
 
+	@Test
+	public void getAllRequestsPositiveManagerGettingAllRequests() {
+		//test method stub
+	}
+	
+	@Test
+	public void getAllRequestsPositiveManagerGettingAllRequestsWithStatus() {
+		//test method stub
+	}
+	
+	@Test
+	public void getAllRequestsPositiveManagerGettingAllRequestsOfUser() {
+		//test method stub
+	}
+	
+	@Test
+	public void getAllRequestsPositiveManagerGettingAllRequestsOfUserWithStatus() {
+		//test method stub
+	}
+	
+	@Test
+	public void getAllRequestsPositiveUserGettingAllOwnRequests() {
+		//test method stub 
+	}
+	
+	@Test
+	public void getAllRequestsPositiveUserGettingAllOwnRequestsWithStatus() {
+		//test method stub
+	}
+	
+	@Test
+	public void getAllRequestsNegativeUserTryingToGetOtherUsersRequests() {
+		//test method stub
+	}
+	
+	@Test 
+	public void getAllRequestsNegativeUserTryingToGetOtherUsersRequestsWithStatus() {
+		//test method stub
+	}
 	
 	
+	@Test
+	public void getAllRequestsNegativeUserTryingToGetAllRequestsWhenNotManager() {
+		//test method stub
+	}
+	
+	@Test
+	public void getAllRequestsNegativeUserTryingToGetAllRequestsWithStatusWhenNotManager() {
+		//test method stub
+	}
+	
+	@Test
+	public void getAllRequestsNegativeTryingToGetAllRequestsOfUserThatDoesntExist() {
+		//test method stub
+	}
+	
+	@Test
+	public void getAllRequestsNegativeTryingToGetAllRequestsOfUserThatDoesntExistWithStatus() {
+		//test method stub asdfasf
+	}
 	
 	
 	
