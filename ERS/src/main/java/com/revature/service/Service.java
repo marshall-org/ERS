@@ -29,6 +29,7 @@ public class Service {
 		
 	}
 	
+	
 	public ERS_user createUser(ERS_user newUser) {
 		
 		return new ERS_user(); //method stub
@@ -80,15 +81,22 @@ public class Service {
 		
 	}
 	
-	public void deleteRequest(int requestId) {
+	public boolean deleteRequest(int requestId) {
 		
 		//method stub
+		return false; 
 		
 	}
 	
 	public ERS_reimbursement updateRequest(ERS_reimbursement updatedReimbursement) {
 		
 		return new ERS_reimbursement(); //method stub
+		
+	}
+	
+	public ERS_reimbursement getRequest(int requestID) {
+		
+		return new ERS_reimbursement();
 		
 	}
 	

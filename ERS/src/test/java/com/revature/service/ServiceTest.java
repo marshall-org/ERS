@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import com.revature.DAL.DAL;
+import com.revature.model.ERS_reimbursement;
 import com.revature.model.ERS_user;
 
 import org.junit.jupiter.api.MethodOrderer.MethodName;
@@ -448,25 +449,36 @@ public class ServiceTest {
 	
 	/*****************************************************BEGIN GET USER TESTS****************************************/
 	
-	@Test
-	public void getUserPositiveUserGettingThemselves() { //should only be allowed to get info on own user or if authorizer is a manager
-		//test method stub 
-	}
 	
 	@Test
-	public void getUserPositiveManagerGettingUser() {
-		//test method stub
+	public void getUserPositive() {
+		
+		ERS_user user = new ERS_user();
+		
+		user.setUser_id(1);
+		
+		when(mockDao.getUser(eq(1))).thenReturn(user);
+		
+		assertEquals(user, sut.getUser(1));
+		
 	}
 	
 	@Test
 	public void getUserNegativeUserDoesntExist() {
-		//test method stub 
+		
+		when(mockDao.getUser(eq(1))).thenThrow(new SQLException("User does not exist"));
+		
+		SQLException e = assertThrows(SQLException.class, () -> {
+			
+			sut.getUser(1);
+			
+		});
+		
+		assertEquals("User does not exist", e.getMessage());
+		
 	}
 	
-	@Test
-	public void getUserNegativeAuthorizingUserIsNotManagerAndTryingToGetOtherUser() {
-		//test method stub
-	}
+
 	
 	
 	/*************************************************************END GET USER TESTS************************************/
@@ -475,56 +487,105 @@ public class ServiceTest {
 	
 	@Test
 	public void createRequestPositive() {
-		//test method stub
+		
+		ERS_reimbursement request = new ERS_reimbursement(50.2, "travel", "Some description", null, 1);
+		ERS_user user = new ERS_user();
+		user.setUser_id(1);
+		
+		when(mockDao.createRequest(eq(request))).thenReturn(request);
+		when(mockDao.getUser(eq(1))).thenReturn(user);
+		
+		assertEquals(request, sut.createRequest(request));
+		
+		
 	}
 	
 	@Test
 	public void createRequestNegativeReimbursementAmountLessThanOrEqualToZero() {	//why would you create a reimbursement request for negative dollars?!?! Baka
-		//test method stub
+		
+		ERS_reimbursement request = new ERS_reimbursement(-20.4, "travel", "Some description", null, 1);
+		ERS_user user = new ERS_user(); 
+		user.setUser_id(1);
+		
+		when(mockDao.getUser(eq(1))).thenReturn(user);
+		
+		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+			
+			sut.createRequest(request);
+			
+		});
+		
+		assertEquals("Unable to create request. Reimbursement amount cannot equal to or less than 0. Please enter a valid reimbursement amount", e.getMessage());
+		
+		
 	}
 	
 	@Test
 	public void createRequestNegativeUserDoesntExist() {	//Trying to create a request for a user that doesn't exist
-		//test method stub
+		
+		ERS_reimbursement request = new ERS_reimbursement(30.3, "travel", "Some description", null, 1);
+		when(mockDao.getUser(eq(1))).thenThrow(new SQLException("Unable to find user"));
+		
+		SQLException e = assertThrows(SQLException.class, () -> {
+			
+			sut.createRequest(request);
+			
+		});
+		
+		assertEquals("Unable to create request. User does not exist", e.getMessage());
+		
 	}
 	
 	@Test
-	public void createRequestNegativeStatusNotValid() {	//When creating tests, will probably just assign as pending in service layer
-		//test method stub
+	public void createRequestNegativeTypeNotValid() {	//When creating tests, will probably just assign as pending in service layer
+		
+		ERS_reimbursement request = new ERS_reimbursement(30.3, "invalid status", "Some description", null, 1);
+		ERS_user user = new ERS_user(); 
+		user.setUser_id(1);
+		
+		when(mockDao.getUser(eq(1))).thenReturn(user);
+		
+		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+			
+			sut.createRequest(request);
+			
+		});
+		
+		assertEquals("Unable to create request. Type is invalid. Please input a valid type", e.getMessage());
+		
 	}
 	
-	@Test
-	public void createRequestNegativeTypeNotValid() {
-		//test method stub
-	}
 	
 	/**********************************************************END CREATE REQUEST TESTS**********************************/
 	
 	/**********************************************************BEGIN DELETE REQUEST TESTS*********************************/
 	
+
 	@Test
-	public void deleteRequestPositiveUserDeletedRequestBelongingToThem() { //Users can delete their own request IF theyre still pending
-		//test method stub
+	public void deleteRequestPositive() {
+		
+		ERS_reimbursement request = new ERS_reimbursement(); 
+		
+		when(mockDao.getRequest(eq(1))).thenReturn(request);
+		when(mockDao.deleteRequest(eq(1))).thenReturn(true);
+		
+		assertEquals(true, sut.deleteRequest(1));
+		
 	}
 	
 	@Test
-	public void deleteRequestPositiveManagerDeletedRequest() {	//Managers can delete any request they like
-		//test method stub
-	}
-	
-	@Test
-	public void deleteRequestNegativeUserTryingToDeleteOwnRequestThatsNotPending() { //Users can only delete their own requests if theyre pending
-		//test method stub
-	}
-	
-	@Test
-	public void deleteRequestNegativeRequestDoesntBelongToUserAndUserNotManager() {
-		//test method stub
-	}
-	
-	@Test
-	public void deleteRequestNegativeAuthorizerDoesntExist() {
-		//test method stub
+	public void deleteRequestNegativeRequestDoesntExist() {
+		
+		when(mockDao.getRequest(eq(1))).thenThrow(new SQLException("Request not found"));
+		
+		SQLException e = assertThrows(SQLException.class, () -> {
+			
+			sut.deleteRequest(1);
+			
+		});
+		
+		assertEquals("Cannot delete request. Request not found", e.getMessage());
+		
 	}
 	
 	/*********************************************************END DELETE REQUEST TESTS****************************************/
@@ -532,39 +593,19 @@ public class ServiceTest {
 	/*********************************************************BEGIN UPDATE REQUEST TESTS**************************************/
 	
 	@Test
-	public void updateRequestPositiveRequestUpdatedByOwningUserAndNotPending() {
-		//test method stub 
-	}
+	public void updateRequestPositive() {}
 	
 	@Test
-	public void updateRequestPositiveRequestUpdatedByManager() {
-		//test method stub
-	}
+	public void updateRequestPositiveEmptyAndNullDontChange() {}
 	
 	@Test
-	public void updateRequestNegativeUserTriedToUpdateOwnRequestButStatusIsNotPending() {
-		//test method stub
-	}
+	public void updateRequestNegativeStatusIsNotValid() {}
 	
 	@Test
-	public void updateRequestNegativeRequestDoesntExist() {
-		//test method stub
-	}
+	public void updateRequestNegativeTypeIsNotValid() {}
 	
 	@Test
-	public void updateRequestNegativeRequestDoesntBelongToUserAndUserNotManager() {
-		//test method stub
-	}
-	
-	@Test
-	public void updateRequestNegativeUserTriedToUpdateStatusButIsNotManager() {
-		//test method stub 
-	}
-	
-	@Test
-	public void updateRequestNegativeManagerTriedToUpdateButStatusIsNotPending() {
-		//test method stub 
-	}
+	public void updateRequestNegativeAmountIsNotValid() {}
 	
 	/**************************************************************END UPDATE REQUEST TESTS******************************************/
 	
@@ -572,116 +613,217 @@ public class ServiceTest {
 	
 
 	@Test
-	public void getAllRequestsPositiveManagerGettingAllRequests() {
-		//test method stub
+	public void getAllRequestsPositive() {
+		
+		ArrayList<ERS_reimbursement> expectedList = new ArrayList<>();
+		
+		ERS_reimbursement request1 = new ERS_reimbursement();
+		ERS_reimbursement request2 = new ERS_reimbursement();
+		
+		request1.setReimb_id(1);
+		request2.setReimb_id(2);
+		
+		expectedList.add(request2);
+		expectedList.add(request1);
+		when(mockDao.getAllRequests()).thenReturn(expectedList);
+		
+		assertEquals(expectedList, sut.getAllRequests());
+		
 	}
 	
 	@Test
-	public void getAllRequestsPositiveManagerGettingAllRequestsWithStatus() {
-		//test method stub
+	public void getAllRequestsByUserIdPositive() {
+		
+		ArrayList<ERS_reimbursement> expectedList = new ArrayList<>();
+		ERS_user user = new ERS_user();
+		user.setUser_id(1);
+		
+		ERS_reimbursement request1 = new ERS_reimbursement();
+		ERS_reimbursement request2 = new ERS_reimbursement();
+		
+		request1.setReimb_id(1);
+		request2.setReimb_id(2);
+		
+		expectedList.add(request2);
+		expectedList.add(request1);
+		
+		when(mockDao.getAllRequests(eq(1))).thenReturn(expectedList);
+		when(mockDao.getUser(eq(1))).thenReturn(user);
+		
+		assertEquals(expectedList, sut.getAllRequests(1));
+		
 	}
 	
 	@Test
-	public void getAllRequestsPositiveManagerGettingAllRequestsOfUser() {
-		//test method stub
+	public void getAllRequestsByUserIdNegativeUserDoesntExist() {
+		
+		when(mockDao.getUser(eq(1))).thenThrow(new SQLException("Unable to find user"));
+		
+		SQLException e = assertThrows(SQLException.class, () -> {
+			
+			sut.getAllRequests(1);
+			
+		});
+		
+		assertEquals("Unable to get requests. User does not exist", e.getMessage());
+		
 	}
 	
 	@Test
-	public void getAllRequestsPositiveManagerGettingAllRequestsOfUserWithStatus() {
-		//test method stub
+	public void getAllRequestsByStatusPositive() {
+		
+		ArrayList<ERS_reimbursement> expectedList = new ArrayList<>();
+		ERS_reimbursement request1 = new ERS_reimbursement();
+		ERS_reimbursement request2 = new ERS_reimbursement();
+		request1.setReimb_id(1);
+		request2.setReimb_id(2);
+		expectedList.add(request2);
+		expectedList.add(request1);
+		
+		when(mockDao.getAllRequests(eq("pending"))).thenReturn(expectedList);
+		
+		assertEquals(expectedList, sut.getAllRequests("pending"));
+		
 	}
 	
 	@Test
-	public void getAllRequestsPositiveUserGettingAllOwnRequests() {
-		//test method stub 
+	public void getAllRequestsByStatusNegativeInvalidStatus() {
+		
+		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+			
+			sut.getAllRequests("invalid status");
+			
+		});
+		
+		assertEquals("Unable to get requests. Invalid status. Please search by a valid status", e.getMessage());
+		
 	}
 	
 	@Test
-	public void getAllRequestsPositiveUserGettingAllOwnRequestsWithStatus() {
-		//test method stub
+	public void getAllRequestsByStatusAndUserIdPositive() {
+		
+		ERS_user user = new ERS_user();
+		ERS_reimbursement request1 = new ERS_reimbursement();
+		ERS_reimbursement request2 = new ERS_reimbursement();
+		ArrayList<ERS_reimbursement> expectedList = new ArrayList<>();
+		request1.setReimb_id(1);
+		request2.setReimb_id(2);
+		user.setUser_id(1);
+		expectedList.add(request2);
+		expectedList.add(request1);
+		
+		when(mockDao.getUser(eq(1))).thenReturn(user);
+		when(mockDao.getAllRequests(eq("pending"), eq(1))).thenReturn(expectedList);
+		
+		assertEquals(expectedList, sut.getAllRequests("pending", 1));
+		
+		
 	}
 	
 	@Test
-	public void getAllRequestsNegativeUserTryingToGetOtherUsersRequests() {
-		//test method stub
-	}
-	
-	@Test 
-	public void getAllRequestsNegativeUserTryingToGetOtherUsersRequestsWithStatus() {
-		//test method stub
-	}
-	
-	
-	@Test
-	public void getAllRequestsNegativeUserTryingToGetAllRequestsWhenNotManager() {
-		//test method stub
-	}
-	
-	@Test
-	public void getAllRequestsNegativeUserTryingToGetAllRequestsWithStatusWhenNotManager() {
-		//test method stub
+	public void getAllRequestsByStatusAndUserIdNegativeUserDoesntExist() {
+		
+		when(mockDao.getUser(eq(1))).thenThrow(new SQLException("Unable to find user"));
+		
+		SQLException e = assertThrows(SQLException.class, () -> {
+			
+			sut.getAllRequests("pending", 1);
+			
+		});
+		
+		assertEquals("Unable to get requests. User does not exist", e.getMessage());
 	}
 	
 	@Test
-	public void getAllRequestsNegativeTryingToGetAllRequestsOfUserThatDoesntExist() {
-		//test method stub
+	public void getAllRequestsByStatusAndUserIdNegativeInvalidStatus() {
+		
+		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+			
+			sut.getAllRequests("invalid status", 1);
+			
+		});
+		
+		assertEquals("Unable to get requests. Invald status. Pkease search by a valid status", e.getMessage());
+		
 	}
 	
-	@Test
-	public void getAllRequestsNegativeTryingToGetAllRequestsOfUserThatDoesntExistWithStatus() {
-		//test method stub asdfasf
-	}
 	
 	
 	/**************************************************************END GET ALL REQUESTS TESTS******************************************/
 	
 	/**************************************************************BEGIN EMPLOYEE VALIDATION TESTS**************************************/
+	/*
+	 * @Test public void validateEmployeeTestPositive() { //So this really doesn't
+	 * return anything. Its working if it DOESNT throw an exception //Im sure there
+	 * a way to assert this...
+	 * 
+	 * 
+	 * 
+	 * }
+	 */
 	
-	@Test
-	public void validateEmployeeTestPositive() {	//So this really doesn't return anything. Its working if it DOESNT throw an exception
-													//Im sure there a way to assert this...
-		
-		
-		
-	}
+	/*
+	 * @Test public void validateEmployeeTestNegative() { //Maybe a cookie expires
+	 * or something idk
+	 * 
+	 * 
+	 * 
+	 * }
+	 */
 	
-	@Test
-	public void validateEmployeeTestNegative() {	//Maybe a cookie expires or something idk
-		
-		
-		
-	}
 	
 	
 	/**************************************************************END EMPLOYEE VALIDATION TESTS******************************************/
 	
 	/**************************************************************BEGIN MANAGER VALIDATION TESTS**************************************/
 	
-	@Test
-	public void validateManagerTestPositive() {	//Same story here
-		
-		
-	}
-	
-	@Test
-	public void validateManagerNegativeCookieExpired() {
-		
-		
-		
-	}
-	
-	@Test
-	public void validateManagerNegativeUserIsEmployee() {
-		
-		
-		
-	}
+	/*
+	 * @Test public void validateManagerTestPositive() { //Same story here
+	 * 
+	 * 
+	 * }
+	 * 
+	 * @Test public void validateManagerNegativeCookieExpired() {
+	 * 
+	 * 
+	 * 
+	 * }
+	 * 
+	 * @Test public void validateManagerNegativeUserIsEmployee() {
+	 * 
+	 * 
+	 * 
+	 * }
+	 */
 	
 	
 	//********************NEED TO ADD TESTS FOR ELEVATING USER TO MANAGER ROLE**********************/
 	
 	
+	@Test
+	public void getRequestByIdPositive() {
+		
+		ERS_reimbursement request = new ERS_reimbursement(); 
+		when(mockDao.getRequest(eq(1))).thenReturn(request);
+		
+		assertEquals(request, sut.getRequest(1));
+		
+	}
 	
+	@Test
+	public void getRequestByIdNegativeRequestDoesntExist() {
+		
+		when(mockDao.getRequest(eq(1))).thenThrow(new SQLException("Unable to find request"));
+		
+		SQLException e = assertThrows(SQLException.class, () -> {
+			
+			sut.getRequest(1);
+			
+		});
+		
+		assertEquals("Unable to find request", e.getMessage());
+		
+	}
 	
 	
 	

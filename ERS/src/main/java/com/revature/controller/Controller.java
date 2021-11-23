@@ -114,6 +114,12 @@ public class Controller {
 		
 	};
 	
+	public Handler getSelf = (ctx) -> {
+		
+		//method stub
+		
+	};
+	
 	
 
 	public void registerEndpoints(Javalin app) {
@@ -124,6 +130,7 @@ public class Controller {
 		app.patch("/ers_users", updateUser);
 		app.get("/ers_users", getAllUsers);
 		app.get("/ers_users", getUser);
+		app.get("/ers_users", getSelf);
 		//ers_reimbursements endpoints
 		app.post("/ers_reimbursements/{user_id}", createRequest);
 		app.delete("/ers_users/{user_id}", deleteRequest);

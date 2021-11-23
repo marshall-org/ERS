@@ -20,6 +20,22 @@ public class ERS_reimbursement {
 	
 	public ERS_reimbursement() {
 		
+		this.reimb_status = "pending";
+		this.reimb_submitted = LocalDateTime.now(); 
+		
+	}
+	
+	public ERS_reimbursement(double reimb_amount, String reimb_type, String reimb_description,
+			SerialBlob reimb_receipt, int reimb_author) {
+		
+		this.reimb_amount = reimb_amount;
+		this.reimb_submitted = LocalDateTime.now(); 
+		this.reimb_status = "pending";
+		this.reimb_type = reimb_type; 
+		this.reimb_description = reimb_description;
+		this.reimb_receipt = reimb_receipt; 
+		this.reimb_author = reimb_author; 
+		
 		
 	}
 	

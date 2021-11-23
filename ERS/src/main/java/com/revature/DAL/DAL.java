@@ -101,6 +101,12 @@ public class DAL {
 		
 	}
 	
+	public ERS_reimbursement getRequest(int requestId) {
+		
+		return new ERS_reimbursement(); 
+		
+	}
+	
 	public ERS_reimbursement updateRequest(ERS_reimbursement updatedReimbursement) {
 		
 		return new ERS_reimbursement(); //method stub 
