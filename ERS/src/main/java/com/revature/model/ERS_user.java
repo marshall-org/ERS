@@ -16,6 +16,17 @@ public class ERS_user {
 	public ERS_user() {
 
 	}
+	
+	public ERS_user(String ers_username, String ers_password, String user_first_name, String user_last_name, String user_email, String user_role) {
+		
+		this.ers_username = ers_username;
+		this.ers_password = ers_password;
+		this.user_first_name = user_first_name;
+		this.user_last_name = user_last_name;
+		this.user_email = user_email;
+		this.user_role = user_role; 
+		
+	}
 
 
 	public int getUser_id() {

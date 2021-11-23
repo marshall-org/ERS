@@ -17,82 +17,103 @@ public class Service {
 		
 	}
 	
+	public void validate_employee(ERS_user user) { //used for validating logged in employee can access feature
+		
+		//method stub
+		
+	}
+	
+	public void validate_manager(ERS_user user) {	//used for validating logged in manager can access feature
+		
+		//method stub
+		
+	}
+	
 	public ERS_user createUser(ERS_user newUser) {
 		
 		return new ERS_user(); //method stub
 		
 	}
 	
-	
-	public void deleteUser(int user_id, ERS_user userPerformingAction) {
+	public ERS_user elevateUser(int userID) {
 		
-		//method stub
+		return new ERS_user();
 		
 	}
 	
-	public ERS_user updateUser(ERS_user updatedUser, ERS_user userPerformingAction) {
+	
+	public boolean deleteUser(int user_id) {
+		
+		//method stub
+		return false; 
+		
+	}
+	
+	public ERS_user updateUser(ERS_user updatedUser) {
 		
 		return new ERS_user(); //method stub
 		
 	}
 	
-	public ArrayList<ERS_user> getAllUsers(ERS_user userPerformingAction) {
+	public ArrayList<ERS_user> getAllUsers() {
 		
 		return new ArrayList<ERS_user>(); ///method stub
 		
 	}
 	
-	public ERS_user getUser(int user_id, ERS_user userPerformingAction) {
+	public ERS_user getUser(int user_id) {
 		
 		return new ERS_user(); //Method stub
 		
 	}
 	
-	public ERS_reimbursement createRequest(ERS_reimbursement newReimbursement, ERS_user userPerformingAction) {
+	public ERS_user getUserByUsernamePassword(String username, String password) {
+		
+		return new ERS_user(); //method stub
+		
+	}
+	
+	
+	public ERS_reimbursement createRequest(ERS_reimbursement newReimbursement) {
 		
 		return new ERS_reimbursement(); //Method stub
 		
 	}
 	
-	public void deleteRequest(int requestId, ERS_user userPerformingAction) {
+	public void deleteRequest(int requestId) {
 		
 		//method stub
 		
 	}
 	
-	public ERS_reimbursement updateRequest(ERS_reimbursement updatedReimbursement, ERS_user userPerformingAction) {
+	public ERS_reimbursement updateRequest(ERS_reimbursement updatedReimbursement) {
 		
 		return new ERS_reimbursement(); //method stub
 		
 	}
 	
-	public ArrayList<ERS_reimbursement> getAllRequests(ERS_user userPerformingAction) {
+	public ArrayList<ERS_reimbursement> getAllRequests() {
 		
 		return new ArrayList<ERS_reimbursement>(); //method stub
 		
 	}
 	
-	public ArrayList<ERS_reimbursement> getAllRequests(ERS_user userPerformingAction, String status) {
+	public ArrayList<ERS_reimbursement> getAllRequests(String status) {
 		
 		return new ArrayList<ERS_reimbursement>(); //method stub
 		
 	}	
 	
-	public ArrayList<ERS_reimbursement> getAllRequests(ERS_user userPerformingAction, String status, int user_id) {
+	public ArrayList<ERS_reimbursement> getAllRequests(String status, int user_id) {
 		
 		return new ArrayList<ERS_reimbursement>(); //method stub
 		
 	}
 	
-	public ArrayList<ERS_reimbursement> getAllRequests(ERS_user userPerformingAction, int user_id) {
+	public ArrayList<ERS_reimbursement> getAllRequests(int user_id) {
 		
 		return new ArrayList<ERS_reimbursement>();
 		
 	}
 	
-	public ERS_user loginUser(ERS_user userLoggingIn) {
-		
-		return new ERS_user(); //method stub 
-		
-	}
 }

@@ -44,9 +44,10 @@ public class DAL {
 		
 	}
 	
-	public void deleteUser(int userId) {
+	public boolean deleteUser(int userId) {
 		
 		//method stub
+		return false; 
 		
 	}
 	
@@ -66,7 +67,19 @@ public class DAL {
 		
 		return new ERS_user(); //method stub 
 		
-	} 
+	}
+	
+	public boolean checkUsernameTaken(ERS_user newUser) {
+		
+		return true; 
+		
+	}
+	
+	public boolean checkEmailTaken(ERS_user newUser) {
+		
+		return true; 
+		
+	}
 	
 	public ERS_reimbursement createRequest(ERS_reimbursement newReimbursement) {
 		
@@ -74,9 +87,17 @@ public class DAL {
 		
 	}
 	
-	public void deleteRequest(int requestId) {
+	public boolean deleteRequest(int requestId) {
 		
 		//method stub 
+		return false; 
+		
+	}
+	
+	public boolean deleteAllUserRequests(int userId) {
+		
+		//method stub
+		return false; 
 		
 	}
 	

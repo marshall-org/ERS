@@ -1,8 +1,12 @@
 package com.revature.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.revature.model.ERS_user;
 import com.revature.service.Service;
 
 import io.javalin.Javalin;
@@ -83,7 +87,30 @@ public class Controller {
 	
 	public Handler loginUser = (ctx) -> {
 		
-		//method stub
+		ERS_user user = ctx.bodyAsClass(ERS_user.class);
+		
+		user = service.getUserByUsernamePassword(user.getErs_username(), user.getErs_password());
+		
+		HttpServletRequest req = ctx.req; 
+		
+		HttpSession session = req.getSession();
+		
+		session.setAttribute("currentuser", user);
+		
+		ctx.status(200);
+		user.setErs_username("");
+		user.setErs_password("");
+		ctx.json(user);
+		
+		
+	};
+	
+	public Handler logoutUser = (ctx) -> {
+		
+		HttpServletRequest req = ctx.req; 
+		req.getSession().invalidate();
+		ctx.status(200);
+		ctx.result("successfully logged out");
 		
 	};
 	
