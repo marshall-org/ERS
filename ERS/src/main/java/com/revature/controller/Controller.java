@@ -124,8 +124,8 @@ public class Controller {
 
 	public void registerEndpoints(Javalin app) {
 		//ers_users table endpoints
-		app.get("/ers_users/login", loginUser);
-		app.post("/ers_users", createUser);
+		app.get("/ers_users/login", loginUser);	
+		app.post("/ers_users", createUser);		
 		app.delete("/ers_users", deleteUser);
 		app.patch("/ers_users", updateUser);
 		app.get("/ers_users", getAllUsers);
