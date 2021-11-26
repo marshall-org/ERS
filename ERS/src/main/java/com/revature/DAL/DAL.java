@@ -2,7 +2,10 @@ package com.revature.DAL;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.postgresql.Driver;
@@ -38,9 +41,33 @@ public class DAL {
 		
 	}	
 	
-	public ERS_user addUser(ERS_user newUser) {
+	public ERS_user addUser(ERS_user newUser) throws SQLException{
+		String sql = "INSERT INTO ers_users (ers_username, ers_password, user_first_name, user_last_name, user_email, user_role) VALUES (?, ?, ?, ?, ?, ?);";
 		
-		return new ERS_user(); //method stub
+		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		
+		statement.setString(1, newUser.getErs_username());
+		statement.setString(2, newUser.getErs_password());
+		statement.setString(3, newUser.getUser_first_name());
+		statement.setString(4, newUser.getUser_last_name());
+		statement.setString(5, newUser.getUser_email());
+		statement.setString(6, newUser.getUser_role());
+		
+		int numRecordUpdated = statement.executeUpdate();
+		
+		if(numRecordUpdated != 1) {
+			
+			throw new SQLException("Adding new user unsuccessful");
+			
+		}
+		
+		ResultSet resultSet = statement.getGeneratedKeys();
+		resultSet.next();
+		int automaticallyGeneratedId = resultSet.getInt(1);
+		
+		newUser.setUser_id(automaticallyGeneratedId);
+		
+		return newUser; //method stub
 		
 	}
 	
@@ -69,15 +96,40 @@ public class DAL {
 		
 	}
 	
-	public boolean checkUsernameTaken(ERS_user newUser) {
+	public boolean checkUsernameTaken(ERS_user newUser) throws SQLException {
 		
-		return true; 
+		String sql = "SELECT * FROM ers_users WHERE ers_username = ?;";
+		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setString(1, newUser.getErs_username());
+		
+		ResultSet resultSet = statement.executeQuery(); 
+		
+		if(resultSet.next()) {
+			
+			return true; 
+			
+		}
+		
+		return false; 
 		
 	}
 	
-	public boolean checkEmailTaken(ERS_user newUser) {
+	public boolean checkEmailTaken(ERS_user newUser) throws SQLException {
 		
-		return true; 
+		String sql = "SELECT * FROM ers_users WHERE user_email = ?;";
+		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setString(1, newUser.getUser_email());
+		
+		ResultSet resultSet = statement.executeQuery();
+		
+		if(resultSet.next()) {
+			
+			return true; 
+			
+		}
+		
+		
+		return false; 
 		
 	}
 	

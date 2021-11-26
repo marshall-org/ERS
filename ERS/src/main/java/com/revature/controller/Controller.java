@@ -12,6 +12,8 @@ import com.revature.service.Service;
 import io.javalin.Javalin;
 import io.javalin.http.Handler;
 
+import java.sql.SQLException;
+
 public class Controller {
 	
 	private Service service;
@@ -27,7 +29,36 @@ public class Controller {
 	
 	public Handler createUser = (ctx) -> {
 		
-		//method stub
+		logger.info("Create user method called");
+		
+		try {
+			
+			ERS_user newUser = ctx.bodyAsClass(ERS_user.class);	//Gotta be doing some more input validation here, so itll throw either a SQLException or IllegalArgumentException
+			ERS_user createdUser = service.createUser(newUser);	
+			
+			ctx.status(200);
+			ctx.json(createdUser);
+			logger.info("New user created successfully: " + createdUser);
+			
+			
+			
+		}
+		catch(IllegalArgumentException e) {
+			
+			ctx.status(400);
+			ctx.result(e.getMessage());
+			logger.error(e.getMessage());
+			
+		}
+		
+		catch(SQLException e) {
+			
+			ctx.status(404);
+			ctx.result(e.getMessage());
+			logger.error(e.getMessage());
+			
+		}
+		
 		
 	};
 	
@@ -124,19 +155,19 @@ public class Controller {
 
 	public void registerEndpoints(Javalin app) {
 		//ers_users table endpoints
-		app.get("/ers_users/login", loginUser);	
+		//app.get("/ers_users/login", loginUser);	
 		app.post("/ers_users", createUser);		
-		app.delete("/ers_users", deleteUser);
-		app.patch("/ers_users", updateUser);
-		app.get("/ers_users", getAllUsers);
-		app.get("/ers_users", getUser);
-		app.get("/ers_users", getSelf);
+		//app.delete("/ers_users", deleteUser);
+		//app.patch("/ers_users", updateUser);
+		//app.get("/ers_users", getAllUsers);
+		//app.get("/ers_users", getUser);
+		//app.get("/ers_users", getSelf);
 		//ers_reimbursements endpoints
-		app.post("/ers_reimbursements/{user_id}", createRequest);
-		app.delete("/ers_users/{user_id}", deleteRequest);
-		app.patch("ers_reimbursements/{user_id}", updateRequest);
-		app.get("ers_users/{user_id}", getUserRequests);
-		app.get("/ers_reimbursements", getAllRequests);
+		//app.post("/ers_reimbursements/{user_id}", createRequest);
+		//app.delete("/ers_users/{user_id}", deleteRequest);
+		//app.patch("ers_reimbursements/{user_id}", updateRequest);
+		//app.get("ers_users/{user_id}", getUserRequests);
+		//app.get("/ers_reimbursements", getAllRequests);
 		
 		
 		

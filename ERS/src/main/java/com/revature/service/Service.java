@@ -1,6 +1,9 @@
 package com.revature.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.revature.DAL.DAL;
 import com.revature.model.ERS_reimbursement;
@@ -30,9 +33,93 @@ public class Service {
 	}
 	
 	
-	public ERS_user createUser(ERS_user newUser) {
+	public ERS_user createUser(ERS_user newUser) throws SQLException, IllegalArgumentException {
 		
-		return new ERS_user(); //method stub
+		
+		//Ok we need to validate the input of newUser. Make sure all the fields are what we want them to be. 
+		
+		//trim username, firstname, lastname, email
+		//not trimming password, because a password should be able to have whitespace at the end/beginning if it wants
+		//We are trimming all these other variables, because theres no reason they should have whitespace
+		newUser.setErs_username(newUser.getErs_username().trim());
+		newUser.setUser_first_name(newUser.getUser_first_name().trim());
+		newUser.setUser_last_name(newUser.getUser_last_name().trim());
+		newUser.setUser_email(newUser.getUser_email().trim());
+		
+		Pattern whitespacePattern = Pattern.compile("\\s");
+		Matcher whitespaceMatcher = whitespacePattern.matcher(newUser.getErs_username());
+		
+		Pattern emailPattern = Pattern.compile("/^\\S+@\\S+\\.\\S+$/"); //This is the same regex I used in the frontend. Hopefully it works here too
+		Matcher emailMatcher = emailPattern.matcher(newUser.getUser_email());
+		
+		
+		//Probably gunna move all this to a helper function. Im probably gunna have to use most of it again anyways for other user altering methods. 
+		
+		if(dao.checkEmailTaken(newUser)) {
+			
+			throw new IllegalArgumentException("Cannot create user. Email already taken");
+			
+		} else if(dao.checkUsernameTaken(newUser)) {
+			
+			throw new IllegalArgumentException("Cannot create user. Username already taken");
+			
+		} else if (newUser.getUser_role() != "employee" || newUser.getUser_role() != "manager") {
+			
+			throw new IllegalArgumentException("Cannot create user. Role is not valid. Must be 'employee' or 'manager'");
+			
+		} else if(newUser.getErs_username() == null || newUser.getErs_username() == "") {
+			
+			throw new IllegalArgumentException("Cannot create user. Username cannot be null or empty");
+			
+		} else if(whitespaceMatcher.find()) {	//This will return true if username has whitespace in it. We've previously trimmed it, so whitespace now means its inbetween characters. No good. 
+			
+			throw new IllegalArgumentException("Cannot create user. Username cannot have whitespace between characters.");
+			
+		} else if(newUser.getErs_password() == null || newUser.getErs_password() == "") {
+			
+			throw new IllegalArgumentException("Cannot create user. Password cannot be null or empty");
+			
+		} else if(newUser.getErs_username() == null || newUser.getErs_username() == "") {
+			
+			throw new IllegalArgumentException("Cannot create user. First name cannot be null or empty");
+			
+		} else if(newUser.getUser_last_name() == null || newUser.getUser_last_name() == "") {
+			
+			throw new IllegalArgumentException("Cannot create user. Last name cannot be null or empty");
+			
+		} else if(newUser.getUser_email() == null || newUser.getUser_email() == "") {
+			
+			throw new IllegalArgumentException("Cannot create user. Email cannot be null or empty");
+			
+		} else if(!emailMatcher.find()) {
+			
+			throw new IllegalArgumentException("Cannot create user. Email is not valid");
+			
+		} else if(newUser.getErs_username().length() > 255) {
+			
+			throw new IllegalArgumentException("Cannot create user. Username exceeds acceptable number of characters[255]");
+			
+		} else if(newUser.getErs_password().length() > 255) {
+			
+			throw new IllegalArgumentException("Cannot create user. Password exceeds acceptable number of characters[255]");
+			
+		} else if (newUser.getUser_first_name().length() > 255) {
+			
+			throw new IllegalArgumentException("Cannot create user. First name exceeds acceptable number of characters[255]");
+			
+		} else if (newUser.getUser_last_name().length() > 255) {
+			
+			throw new IllegalArgumentException("Cannot create user. Last name exceeds acceptable number of characters[255]");
+			
+		} else if(newUser.getUser_email().length() > 255) {
+			
+			throw new IllegalArgumentException("Cannot create user. Email exceeds acceptable number of characters[255]");
+			
+		}
+		
+		ERS_user returnUser = dao.addUser(newUser);
+		return returnUser;
+		
 		
 	}
 	

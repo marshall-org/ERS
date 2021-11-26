@@ -15,6 +15,9 @@ public class ERS_user {
 	
 	public ERS_user() {
 
+		user_role = "employee";	//We default to employee, because we only want to be able to elevate new employees to managers by having managers approve their elevation
+								//If i really need to just add a manager, ill do it in dbeaver, itll be fine. 
+		
 	}
 	
 	public ERS_user(String ers_username, String ers_password, String user_first_name, String user_last_name, String user_email, String user_role) {
