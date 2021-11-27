@@ -384,10 +384,11 @@ public class ServiceTest {
 	
 	/*********************************************END CREATE USER TESTS************************************/
 	
-	/*********************************************BEGIN DELETE USER TESTS***********************************/
+	/*********************************************BEGIN DELETE USER TESTS
+	 * @throws SQLException ***********************************/
 	
 	@Test
-	public void deleteUserPositive() {	//only managers can delete users
+	public void deleteUserPositive() throws SQLException {	//only managers can delete users
 		//We do all our authenticating on the controller layer so we should assume for this test that the user is already verified as a manager
 		
 		ERS_user userToDelete = new ERS_user();
@@ -403,7 +404,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void deleteUserNegativeUserDoesntExist() {
+	public void deleteUserNegativeUserDoesntExist() throws SQLException {
 		
 		when(mockDao.getUser(eq(1))).thenThrow(new SQLException("No user with that ID"));
 		
@@ -438,10 +439,11 @@ public class ServiceTest {
 	
 	/*************************************************END LOGIN TESTS*********************************************/
 	
-	/**************************************************BEGIN UPDATE USER TESTS*************************************/
+	/**************************************************BEGIN UPDATE USER TESTS
+	 * @throws SQLException *************************************/
 	
 	@Test
-	public void updateUserPositiveUser() {	//User profile successfully updated by user
+	public void updateUserPositiveUser() throws SQLException {	//User profile successfully updated by user
 		ERS_user originalUser = new ERS_user("username", "password", "John", "Doe", "email@revature.net", "employee");
 		ERS_user updatingUser = new ERS_user("username", "password2", "John2", "Doe2", "email@revature.net", "employee"); //Cant update username or email sorry
 		ERS_user updatedUser = new ERS_user("1809aec60e165c214dd7b02d1f1b42ada7674d6a14ad70ba44ffd7b0641436bf", 
@@ -457,7 +459,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void updateUserPositiveNullAndEmptyFieldsDontUpdate() {
+	public void updateUserPositiveNullAndEmptyFieldsDontUpdate() throws SQLException {
 		
 		ERS_user originalUser = new ERS_user("username", "password", "John", "Doe", "email@revature.net", "employee");
 		ERS_user updatingUser = new ERS_user("username", "password2", "", null, "email@revature.net", null); //Cant update username or email sorry
@@ -475,7 +477,7 @@ public class ServiceTest {
 	
 
 	@Test
-	public void updateUserNegativeUserDoesntExist() {
+	public void updateUserNegativeUserDoesntExist() throws SQLException {
 
 		ERS_user updatingUser = new ERS_user("username", "password2", "John2", "Doe2", "email@revature.net", "employee");
 		
@@ -494,7 +496,7 @@ public class ServiceTest {
 	}
 	
 	@Test 
-	public void updateUserNegativeUpdatingUsername() {
+	public void updateUserNegativeUpdatingUsername() throws SQLException {
 		
 		ERS_user originalUser = new ERS_user("username", "password", "John", "Doe", "email@revature.net", "employee");
 		ERS_user updatingUser = new ERS_user("newUsername", "password", "John", "Doe", "email@revature.net", "employee");
@@ -514,7 +516,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void updateUserNegativeUpdatingEmail() {
+	public void updateUserNegativeUpdatingEmail() throws SQLException {
 		
 		ERS_user originalUser = new ERS_user("username", "password", "John", "Doe", "email@revature.net", "employee");
 		ERS_user updatingUser = new ERS_user("username", "password", "John", "Doe", "newemail@revature.net", "employee");
@@ -563,11 +565,12 @@ public class ServiceTest {
 	
 	/******************************************************END GET ALL USER TESTS************************************/
 	
-	/*****************************************************BEGIN GET USER TESTS****************************************/
+	/*****************************************************BEGIN GET USER TESTS
+	 * @throws SQLException ****************************************/
 	
 	
 	@Test
-	public void getUserPositive() {
+	public void getUserPositive() throws SQLException {
 		
 		ERS_user user = new ERS_user();
 		
@@ -580,7 +583,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void getUserNegativeUserDoesntExist() {
+	public void getUserNegativeUserDoesntExist() throws SQLException {
 		
 		when(mockDao.getUser(eq(1))).thenThrow(new SQLException("User does not exist"));
 		
@@ -599,10 +602,11 @@ public class ServiceTest {
 	
 	/*************************************************************END GET USER TESTS************************************/
 	
-	/***********************************************************BEGIN CREATE REQUEST TESTS******************************/
+	/***********************************************************BEGIN CREATE REQUEST TESTS
+	 * @throws SQLException ******************************/
 	
 	@Test
-	public void createRequestPositive() {
+	public void createRequestPositive() throws SQLException {
 		
 		ERS_reimbursement request = new ERS_reimbursement(50.2, "travel", "Some description", null, 1);
 		ERS_user user = new ERS_user();
@@ -617,7 +621,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void createRequestNegativeReimbursementAmountLessThanOrEqualToZero() {	//why would you create a reimbursement request for negative dollars?!?! Baka
+	public void createRequestNegativeReimbursementAmountLessThanOrEqualToZero() throws SQLException {	//why would you create a reimbursement request for negative dollars?!?! Baka
 		
 		ERS_reimbursement request = new ERS_reimbursement(-20.4, "travel", "Some description", null, 1);
 		ERS_user user = new ERS_user(); 
@@ -637,7 +641,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void createRequestNegativeUserDoesntExist() {	//Trying to create a request for a user that doesn't exist
+	public void createRequestNegativeUserDoesntExist() throws SQLException {	//Trying to create a request for a user that doesn't exist
 		
 		ERS_reimbursement request = new ERS_reimbursement(30.3, "travel", "Some description", null, 1);
 		when(mockDao.getUser(eq(1))).thenThrow(new SQLException("Unable to find user"));
@@ -653,7 +657,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void createRequestNegativeTypeNotValid() {	//When creating tests, will probably just assign as pending in service layer
+	public void createRequestNegativeTypeNotValid() throws SQLException {	//When creating tests, will probably just assign as pending in service layer
 		
 		ERS_reimbursement request = new ERS_reimbursement(30.3, "invalid status", "Some description", null, 1);
 		ERS_user user = new ERS_user(); 
@@ -748,7 +752,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void getAllRequestsByUserIdPositive() {
+	public void getAllRequestsByUserIdPositive() throws SQLException {
 		
 		ArrayList<ERS_reimbursement> expectedList = new ArrayList<>();
 		ERS_user user = new ERS_user();
@@ -771,7 +775,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void getAllRequestsByUserIdNegativeUserDoesntExist() {
+	public void getAllRequestsByUserIdNegativeUserDoesntExist() throws SQLException {
 		
 		when(mockDao.getUser(eq(1))).thenThrow(new SQLException("Unable to find user"));
 		
@@ -816,7 +820,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void getAllRequestsByStatusAndUserIdPositive() {
+	public void getAllRequestsByStatusAndUserIdPositive() throws SQLException {
 		
 		ERS_user user = new ERS_user();
 		ERS_reimbursement request1 = new ERS_reimbursement();
@@ -837,7 +841,7 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void getAllRequestsByStatusAndUserIdNegativeUserDoesntExist() {
+	public void getAllRequestsByStatusAndUserIdNegativeUserDoesntExist() throws SQLException {
 		
 		when(mockDao.getUser(eq(1))).thenThrow(new SQLException("Unable to find user"));
 		

@@ -90,9 +90,33 @@ public class DAL {
 		
 	}
 	
-	public ERS_user getUser(int userID) {
+	public ERS_user getUser(int userID) throws SQLException {
 		
-		return new ERS_user(); //method stub 
+		String sql = "SELECT * FROM ers_users WHERE client_id = ?;";
+		
+		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		
+		statement.setInt(1, userID);
+		
+		ResultSet resultSet = statement.executeQuery();
+		
+		if(resultSet.next() == false) {
+			
+			throw new SQLException("No user with that ID");
+			
+		}
+		
+		ERS_user user = new ERS_user();	//Thought it would be a bit more readable if I did it this way instead of throwing it all in a constructor
+		user.setUser_id(userID);
+		user.setErs_username(resultSet.getString("ers_username"));
+		user.setErs_password(resultSet.getString("ers_password"));
+		user.setUser_first_name(resultSet.getString("user_first_name"));
+		user.setUser_last_name(resultSet.getString("user_last_name"));
+		user.setUser_email(resultSet.getString("user_email"));
+		user.setUser_role(resultSet.getString("user_role"));
+		
+		
+		return user; 
 		
 	}
 	

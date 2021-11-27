@@ -1,5 +1,9 @@
 package com.revature.service;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -33,7 +37,7 @@ public class Service {
 	}
 	
 	
-	public ERS_user createUser(ERS_user newUser) throws SQLException, IllegalArgumentException {
+	public ERS_user createUser(ERS_user newUser) throws SQLException, IllegalArgumentException, NoSuchAlgorithmException {
 		
 		
 		//Ok we need to validate the input of newUser. Make sure all the fields are what we want them to be. 
@@ -117,7 +121,24 @@ public class Service {
 			
 		}
 		
-		ERS_user returnUser = dao.addUser(newUser);
+		//Need to add username/password hashing here
+		//Need to salt with email too
+		
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(newUser.getErs_username().getBytes(StandardCharsets.UTF_8));
+		byte[] digest = md.digest();
+		
+		newUser.setErs_username(String.format("%064x", new BigInteger(1, digest)));
+		
+		md.update(newUser.getErs_password().getBytes(StandardCharsets.UTF_8));
+		byte[] digest2 = md.digest();
+		
+		newUser.setErs_password(String.format("%064x", new BigInteger(1, digest2)));
+		
+		
+		
+		newUser = dao.addUser(newUser);
+		ERS_user returnUser = dao.getUser(newUser.getUser_id());
 		return returnUser;
 		
 		
