@@ -221,8 +221,40 @@ public class DAL {
 	}
 	
 	public ArrayList<ERS_reimbursement> getAllRequests(int userId) {
+
 		
 		return new ArrayList<ERS_reimbursement>(); //method stub 
+		
+	}
+	
+	public ERS_user getUserByUsernamePassword(String username, String password) throws SQLException {
+		
+		String sql = "SELECT * FROM ers_users WHERE ers_username = ? AND ers_password = ?;";
+		
+		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		
+		statement.setString(1, username);
+		statement.setString(2, password);
+		
+		ResultSet resultSet = statement.executeQuery();
+		
+		if(!resultSet.next()) {
+			
+			throw new SQLException("Invalid login credentials");
+			
+		}
+		
+		ERS_user user = new ERS_user();
+		user.setUser_id(resultSet.getInt("user_id"));
+		user.setErs_username("");
+		user.setErs_password("");
+		user.setUser_first_name(resultSet.getString("user_first_name"));
+		user.setUser_last_name(resultSet.getString("user_last_name"));
+		user.setUser_email(resultSet.getString("user_email"));
+		user.setUser_role(resultSet.getString("user_role"));
+		
+		
+		return user;
 		
 	}
 	

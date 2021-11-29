@@ -112,7 +112,25 @@ public class Controller {
 	
 	public Handler getUser = (ctx) -> {
 		
-		//method stub
+		int user_id = Integer.parseInt(ctx.pathParam("user_id"));
+		
+		try {
+			
+			ctx.json(service.getUser(user_id));
+			ctx.status(200);
+			
+		}
+		
+		catch(SQLException e) {
+			
+			ctx.result(e.getMessage());
+			ctx.status(400);
+			
+			
+		}
+		
+		
+		
 		
 	};
 	
@@ -148,20 +166,32 @@ public class Controller {
 	
 	public Handler loginUser = (ctx) -> {
 		
-		ERS_user user = ctx.bodyAsClass(ERS_user.class);
+		try {
+			
+			ERS_user user = ctx.bodyAsClass(ERS_user.class);
+			
+			user = service.getUserByUsernamePassword(user);
+			
+			HttpServletRequest req = ctx.req; 
+			
+			HttpSession session = req.getSession();
+			
+			session.setAttribute("currentuser", user);
+			
+			ctx.status(200);
+			user.setErs_username("");
+			user.setErs_password("");
+			ctx.json(user);
+			
+			
+		}
 		
-		user = service.getUserByUsernamePassword(user.getErs_username(), user.getErs_password());
-		
-		HttpServletRequest req = ctx.req; 
-		
-		HttpSession session = req.getSession();
-		
-		session.setAttribute("currentuser", user);
-		
-		ctx.status(200);
-		user.setErs_username("");
-		user.setErs_password("");
-		ctx.json(user);
+		catch(SQLException e) {
+			
+			ctx.result(e.getMessage());
+			ctx.status(400);
+			
+		}
 		
 		
 	};
@@ -190,7 +220,7 @@ public class Controller {
 		app.delete("/ers_users/{user_id}", deleteUser);
 		//app.patch("/ers_users", updateUser);
 		//app.get("/ers_users", getAllUsers);
-		//app.get("/ers_users", getUser);
+		app.get("/ers_users/{user_id}", getUser);
 		//app.get("/ers_users", getSelf);
 		//ers_reimbursements endpoints
 		//app.post("/ers_reimbursements/{user_id}", createRequest);

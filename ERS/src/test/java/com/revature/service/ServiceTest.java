@@ -483,19 +483,23 @@ public class ServiceTest {
 	
 	/*********************************************BEGIN LOGIN TESTS*********************************************/
 
-	//I dont think I'll need any of this, as ive moved all of the login functionality to the controller layer
+
 	
-	/*
-	 * @Test public void loginPositive() {
-	 * 
-	 * 
-	 * 
-	 * }
-	 * 
-	 * @Test public void loginNegativeUsernameDoesntMatch() { //test method stub }
-	 * 
-	 * @Test public void loginNegativePasswordDoesntMatch() { //test method stub }
-	 */
+	
+	  @Test public void loginPositive() {
+	  
+	  
+	 
+	 }
+	  
+	  @Test public void loginNegativeUsernameDoesntMatch() { //test method stub }
+		
+	  }
+	  
+	  @Test public void loginNegativePasswordDoesntMatch() { //test method stub }
+		  
+	  }
+	 
 	
 	/*************************************************END LOGIN TESTS*********************************************/
 	
@@ -650,7 +654,7 @@ public class ServiceTest {
 		SQLException e = assertThrows(SQLException.class, () -> {
 			
 			sut.getUser(1);
-			
+			   
 		});
 		
 		assertEquals("User does not exist", e.getMessage());

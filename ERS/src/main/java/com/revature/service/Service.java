@@ -190,15 +190,36 @@ public class Service {
 		
 	}
 	
-	public ERS_user getUser(int user_id) {
+	public ERS_user getUser(int user_id) throws SQLException {
 		
-		return new ERS_user(); //Method stub
+		ERS_user returnUser = dao.getUser(user_id);
+		returnUser.setErs_username("");
+		returnUser.setErs_password("");
+		
+		return returnUser; //Method stub
 		
 	}
 	
-	public ERS_user getUserByUsernamePassword(String username, String password) {
+	public ERS_user getUserByUsernamePassword(ERS_user user) throws NoSuchAlgorithmException, SQLException {
 		
-		return new ERS_user(); //method stub
+		
+		String usernameWithSalt = user.getErs_username() + user.getUser_email();
+		String passwordWithSalt = user.getErs_password() + user.getUser_email();
+		
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(usernameWithSalt.getBytes(StandardCharsets.UTF_8));
+		byte[] digest = md.digest();
+		
+		user.setErs_username(String.format("%064x", new BigInteger(1, digest)));
+		
+		md.update(passwordWithSalt.getBytes(StandardCharsets.UTF_8));
+		byte[] digest2 = md.digest();
+		
+		user.setErs_password(String.format("%064x", new BigInteger(1, digest2)));
+		
+		dao.getUserByUsernamePassword(user.getErs_username(), user.getErs_password());
+		
+		return user; //method stub
 		
 	}
 	
