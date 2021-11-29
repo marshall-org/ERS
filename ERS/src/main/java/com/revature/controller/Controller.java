@@ -64,7 +64,37 @@ public class Controller {
 	
 	public Handler deleteUser = (ctx) -> {
 		
-		//method stub
+		
+		int user_id = Integer.parseInt(ctx.pathParam("user_id")); //Get the id of the user we want to delete from the URI
+	
+		try {
+			
+			
+			if(service.deleteUser(user_id)) {
+				
+				ctx.result("User with id of " + user_id + " successfully deleted.");
+				ctx.status(200);				
+				
+			}else {
+				
+				ctx.result("Unable to delete user with id of " + user_id + ". User does not exist");
+				ctx.status(400);
+				
+			}
+			ctx.result("User with id of " + user_id + " successfully deleted.");
+			ctx.status(200);
+			
+			
+		}
+		
+		catch(SQLException e) {
+			
+			ctx.result(e.getMessage());
+			ctx.status(400);
+			
+		}
+	
+		
 		
 	};
 	
@@ -157,7 +187,7 @@ public class Controller {
 		//ers_users table endpoints
 		//app.get("/ers_users/login", loginUser);	
 		app.post("/ers_users", createUser);		
-		//app.delete("/ers_users", deleteUser);
+		app.delete("/ers_users/{user_id}", deleteUser);
 		//app.patch("/ers_users", updateUser);
 		//app.get("/ers_users", getAllUsers);
 		//app.get("/ers_users", getUser);

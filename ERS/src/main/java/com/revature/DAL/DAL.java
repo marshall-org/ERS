@@ -71,10 +71,23 @@ public class DAL {
 		
 	}
 	
-	public boolean deleteUser(int userId) {
+	public boolean deleteUser(int userId) throws SQLException {
 		
-		//method stub
-		return false; 
+		String sql = "DELETE * FROM ers_users WHERE user_id = ?;";
+		
+		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		statement.setInt(1, userId);
+		
+		int recordsUpdated = statement.executeUpdate();
+		
+		if(recordsUpdated != 1) {
+			
+			return false;
+			
+		}
+		
+		
+		return true; 
 		
 	}
 	
@@ -92,7 +105,7 @@ public class DAL {
 	
 	public ERS_user getUser(int userID) throws SQLException {
 		
-		String sql = "SELECT * FROM ers_users WHERE client_id = ?;";
+		String sql = "SELECT * FROM ers_users WHERE user_id = ?;";
 		
 		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		

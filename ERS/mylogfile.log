@@ -1,0 +1,201 @@
+29 Nov 2021 - 09:28:29.791 [main] INFO  io.javalin.Javalin - 
+       __                      __ _            __ __
+      / /____ _ _   __ ____ _ / /(_)____      / // /
+ __  / // __ `/| | / // __ `// // // __ \    / // /_
+/ /_/ // /_/ / | |/ // /_/ // // // / / /   /__  __/
+\____/ \__,_/  |___/ \__,_//_//_//_/ /_/      /_/
+
+          https://javalin.io/documentation
+
+29 Nov 2021 - 09:28:29.824 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @872ms to org.eclipse.jetty.util.log.Slf4jLog
+29 Nov 2021 - 09:28:29.825 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+29 Nov 2021 - 09:28:29.865 [main] INFO  io.javalin.Javalin - You are running Javalin 4.1.1 (released October 10, 2021).
+29 Nov 2021 - 09:28:30.190 [main] INFO  io.javalin.Javalin - Listening on http://localhost:8081/
+29 Nov 2021 - 09:28:30.190 [main] INFO  io.javalin.Javalin - Javalin started in 365ms \o/
+29 Nov 2021 - 09:28:33.986 [qtp1949298838-23] INFO  com.revature.app.Application - POST request received to the /ers_users/ endpoint
+29 Nov 2021 - 09:28:33.986 [qtp1949298838-23] INFO  com.revature.controller.Controller - Create user method called
+29 Nov 2021 - 09:28:34.243 [qtp1949298838-23] WARN  io.javalin.Javalin - Uncaught exception
+java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String, int)" because "com.revature.DAL.DAL.connection" is null
+	at com.revature.DAL.DAL.checkEmailTaken(DAL.java:144)
+	at com.revature.service.Service.createUser(Service.java:62)
+	at com.revature.controller.Controller.lambda$0(Controller.java:37)
+	at io.javalin.core.security.SecurityUtil.noopAccessManager(SecurityUtil.kt:20)
+	at io.javalin.http.JavalinServlet.addHandler$lambda-5(JavalinServlet.kt:113)
+	at io.javalin.http.JavalinServlet$service$tryBeforeAndEndpointHandlers$1.invoke(JavalinServlet.kt:44)
+	at io.javalin.http.JavalinServlet$service$tryBeforeAndEndpointHandlers$1.invoke(JavalinServlet.kt:39)
+	at io.javalin.http.JavalinServlet.service$tryWithExceptionMapper(JavalinServlet.kt:129)
+	at io.javalin.http.JavalinServlet.service$tryBeforeAndEndpointHandlers(JavalinServlet.kt:39)
+	at io.javalin.http.JavalinServlet.service(JavalinServlet.kt:87)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at io.javalin.jetty.JavalinJettyServlet.service(JavalinJettyServlet.kt:58)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:799)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:550)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:233)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1624)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:233)
+	at io.javalin.jetty.JettyServer$start$wsAndHttpHandler$1.doHandle(JettyServer.kt:52)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:188)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:501)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1594)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:186)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1349)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.StatisticsHandler.handle(StatisticsHandler.java:179)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:127)
+	at org.eclipse.jetty.server.Server.handle(Server.java:516)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$1(HttpChannel.java:400)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:645)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:392)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:277)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:311)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
+	at org.eclipse.jetty.io.ChannelEndPoint$1.run(ChannelEndPoint.java:104)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:883)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1034)
+	at java.base/java.lang.Thread.run(Thread.java:831)
+29 Nov 2021 - 09:32:27.865 [main] INFO  io.javalin.Javalin - 
+       __                      __ _            __ __
+      / /____ _ _   __ ____ _ / /(_)____      / // /
+ __  / // __ `/| | / // __ `// // // __ \    / // /_
+/ /_/ // /_/ / | |/ // /_/ // // // / / /   /__  __/
+\____/ \__,_/  |___/ \__,_//_//_//_/ /_/      /_/
+
+          https://javalin.io/documentation
+
+29 Nov 2021 - 09:32:27.902 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @1027ms to org.eclipse.jetty.util.log.Slf4jLog
+29 Nov 2021 - 09:32:27.903 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+29 Nov 2021 - 09:32:27.936 [main] INFO  io.javalin.Javalin - You are running Javalin 4.1.1 (released October 10, 2021).
+29 Nov 2021 - 09:32:28.239 [main] INFO  io.javalin.Javalin - Listening on http://localhost:8081/
+29 Nov 2021 - 09:32:28.239 [main] INFO  io.javalin.Javalin - Javalin started in 336ms \o/
+29 Nov 2021 - 09:33:44.622 [main] INFO  io.javalin.Javalin - 
+       __                      __ _            __ __
+      / /____ _ _   __ ____ _ / /(_)____      / // /
+ __  / // __ `/| | / // __ `// // // __ \    / // /_
+/ /_/ // /_/ / | |/ // /_/ // // // / / /   /__  __/
+\____/ \__,_/  |___/ \__,_//_//_//_/ /_/      /_/
+
+          https://javalin.io/documentation
+
+29 Nov 2021 - 09:33:44.665 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @850ms to org.eclipse.jetty.util.log.Slf4jLog
+29 Nov 2021 - 09:33:44.666 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+29 Nov 2021 - 09:33:44.711 [main] INFO  io.javalin.Javalin - You are running Javalin 4.1.1 (released October 10, 2021).
+29 Nov 2021 - 09:33:44.938 [main] ERROR io.javalin.Javalin - Failed to start Javalin
+29 Nov 2021 - 09:33:44.939 [main] INFO  io.javalin.Javalin - Stopping Javalin ...
+29 Nov 2021 - 09:33:44.948 [main] INFO  io.javalin.Javalin - Javalin has stopped
+29 Nov 2021 - 09:37:14.537 [main] INFO  io.javalin.Javalin - 
+       __                      __ _            __ __
+      / /____ _ _   __ ____ _ / /(_)____      / // /
+ __  / // __ `/| | / // __ `// // // __ \    / // /_
+/ /_/ // /_/ / | |/ // /_/ // // // / / /   /__  __/
+\____/ \__,_/  |___/ \__,_//_//_//_/ /_/      /_/
+
+          https://javalin.io/documentation
+
+29 Nov 2021 - 09:37:14.569 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @762ms to org.eclipse.jetty.util.log.Slf4jLog
+29 Nov 2021 - 09:37:14.571 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+29 Nov 2021 - 09:37:14.600 [main] INFO  io.javalin.Javalin - You are running Javalin 4.1.1 (released October 10, 2021).
+29 Nov 2021 - 09:37:14.841 [main] INFO  io.javalin.Javalin - Listening on http://localhost:8081/
+29 Nov 2021 - 09:37:14.841 [main] INFO  io.javalin.Javalin - Javalin started in 271ms \o/
+29 Nov 2021 - 09:37:37.917 [main] INFO  io.javalin.Javalin - 
+       __                      __ _            __ __
+      / /____ _ _   __ ____ _ / /(_)____      / // /
+ __  / // __ `/| | / // __ `// // // __ \    / // /_
+/ /_/ // /_/ / | |/ // /_/ // // // / / /   /__  __/
+\____/ \__,_/  |___/ \__,_//_//_//_/ /_/      /_/
+
+          https://javalin.io/documentation
+
+29 Nov 2021 - 09:37:37.946 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @674ms to org.eclipse.jetty.util.log.Slf4jLog
+29 Nov 2021 - 09:37:37.947 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+29 Nov 2021 - 09:37:37.990 [main] INFO  io.javalin.Javalin - You are running Javalin 4.1.1 (released October 10, 2021).
+29 Nov 2021 - 09:37:38.193 [main] ERROR io.javalin.Javalin - Failed to start Javalin
+29 Nov 2021 - 09:37:38.193 [main] INFO  io.javalin.Javalin - Stopping Javalin ...
+29 Nov 2021 - 09:37:38.200 [main] INFO  io.javalin.Javalin - Javalin has stopped
+29 Nov 2021 - 09:38:07.987 [main] INFO  io.javalin.Javalin - 
+       __                      __ _            __ __
+      / /____ _ _   __ ____ _ / /(_)____      / // /
+ __  / // __ `/| | / // __ `// // // __ \    / // /_
+/ /_/ // /_/ / | |/ // /_/ // // // / / /   /__  __/
+\____/ \__,_/  |___/ \__,_//_//_//_/ /_/      /_/
+
+          https://javalin.io/documentation
+
+29 Nov 2021 - 09:38:07.998 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @1035ms to org.eclipse.jetty.util.log.Slf4jLog
+29 Nov 2021 - 09:38:08.000 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+29 Nov 2021 - 09:38:08.021 [main] INFO  io.javalin.Javalin - You are running Javalin 4.1.1 (released October 10, 2021).
+29 Nov 2021 - 09:38:08.167 [main] ERROR io.javalin.Javalin - Failed to start Javalin
+29 Nov 2021 - 09:38:08.167 [main] INFO  io.javalin.Javalin - Stopping Javalin ...
+29 Nov 2021 - 09:38:08.174 [main] INFO  io.javalin.Javalin - Javalin has stopped
+29 Nov 2021 - 09:38:24.444 [main] INFO  io.javalin.Javalin - 
+       __                      __ _            __ __
+      / /____ _ _   __ ____ _ / /(_)____      / // /
+ __  / // __ `/| | / // __ `// // // __ \    / // /_
+/ /_/ // /_/ / | |/ // /_/ // // // / / /   /__  __/
+\____/ \__,_/  |___/ \__,_//_//_//_/ /_/      /_/
+
+          https://javalin.io/documentation
+
+29 Nov 2021 - 09:38:24.454 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @958ms to org.eclipse.jetty.util.log.Slf4jLog
+29 Nov 2021 - 09:38:24.456 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+29 Nov 2021 - 09:38:24.481 [main] INFO  io.javalin.Javalin - You are running Javalin 4.1.1 (released October 10, 2021).
+29 Nov 2021 - 09:38:24.656 [main] INFO  io.javalin.Javalin - Listening on http://localhost:8081/
+29 Nov 2021 - 09:38:24.657 [main] INFO  io.javalin.Javalin - Javalin started in 202ms \o/
+29 Nov 2021 - 09:38:30.191 [qtp1455695758-17] INFO  com.revature.app.Application - POST request received to the /ers_users/ endpoint
+29 Nov 2021 - 09:38:30.192 [qtp1455695758-17] INFO  com.revature.controller.Controller - Create user method called
+29 Nov 2021 - 09:38:30.459 [qtp1455695758-17] ERROR com.revature.controller.Controller - Cannot create user. Role is not valid. Must be 'employee' or 'manager'
+29 Nov 2021 - 09:39:14.662 [main] INFO  io.javalin.Javalin - 
+       __                      __ _            __ __
+      / /____ _ _   __ ____ _ / /(_)____      / // /
+ __  / // __ `/| | / // __ `// // // __ \    / // /_
+/ /_/ // /_/ / | |/ // /_/ // // // / / /   /__  __/
+\____/ \__,_/  |___/ \__,_//_//_//_/ /_/      /_/
+
+          https://javalin.io/documentation
+
+29 Nov 2021 - 09:39:14.673 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @1145ms to org.eclipse.jetty.util.log.Slf4jLog
+29 Nov 2021 - 09:39:14.674 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+29 Nov 2021 - 09:39:14.696 [main] INFO  io.javalin.Javalin - You are running Javalin 4.1.1 (released October 10, 2021).
+29 Nov 2021 - 09:39:14.863 [main] INFO  io.javalin.Javalin - Listening on http://localhost:8081/
+29 Nov 2021 - 09:39:14.863 [main] INFO  io.javalin.Javalin - Javalin started in 189ms \o/
+29 Nov 2021 - 09:39:18.309 [qtp1165791284-23] INFO  com.revature.app.Application - POST request received to the /ers_users/ endpoint
+29 Nov 2021 - 09:39:18.310 [qtp1165791284-23] INFO  com.revature.controller.Controller - Create user method called
+29 Nov 2021 - 09:39:18.617 [qtp1165791284-23] ERROR com.revature.controller.Controller - Cannot create user. Role is not valid. Must be 'employee' or 'manager'
+29 Nov 2021 - 09:43:54.130 [main] INFO  io.javalin.Javalin - 
+       __                      __ _            __ __
+      / /____ _ _   __ ____ _ / /(_)____      / // /
+ __  / // __ `/| | / // __ `// // // __ \    / // /_
+/ /_/ // /_/ / | |/ // /_/ // // // / / /   /__  __/
+\____/ \__,_/  |___/ \__,_//_//_//_/ /_/      /_/
+
+          https://javalin.io/documentation
+
+29 Nov 2021 - 09:43:54.145 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @1121ms to org.eclipse.jetty.util.log.Slf4jLog
+29 Nov 2021 - 09:43:54.147 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+29 Nov 2021 - 09:43:54.171 [main] INFO  io.javalin.Javalin - You are running Javalin 4.1.1 (released October 10, 2021).
+29 Nov 2021 - 09:43:54.375 [main] INFO  io.javalin.Javalin - Listening on http://localhost:8081/
+29 Nov 2021 - 09:43:54.376 [main] INFO  io.javalin.Javalin - Javalin started in 230ms \o/
+29 Nov 2021 - 09:43:57.104 [qtp1593165620-18] INFO  com.revature.app.Application - POST request received to the /ers_users/ endpoint
+29 Nov 2021 - 09:43:57.105 [qtp1593165620-18] INFO  com.revature.controller.Controller - Create user method called
+29 Nov 2021 - 09:43:57.438 [qtp1593165620-18] ERROR com.revature.controller.Controller - ERROR: column "client_id" does not exist
+  Position: 31
+29 Nov 2021 - 09:44:32.196 [main] INFO  io.javalin.Javalin - 
+       __                      __ _            __ __
+      / /____ _ _   __ ____ _ / /(_)____      / // /
+ __  / // __ `/| | / // __ `// // // __ \    / // /_
+/ /_/ // /_/ / | |/ // /_/ // // // / / /   /__  __/
+\____/ \__,_/  |___/ \__,_//_//_//_/ /_/      /_/
+
+          https://javalin.io/documentation
+
+29 Nov 2021 - 09:44:32.208 [main] INFO  org.eclipse.jetty.util.log - Logging initialized @1323ms to org.eclipse.jetty.util.log.Slf4jLog
+29 Nov 2021 - 09:44:32.209 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+29 Nov 2021 - 09:44:32.229 [main] INFO  io.javalin.Javalin - You are running Javalin 4.1.1 (released October 10, 2021).
+29 Nov 2021 - 09:44:32.378 [main] INFO  io.javalin.Javalin - Listening on http://localhost:8081/
+29 Nov 2021 - 09:44:32.378 [main] INFO  io.javalin.Javalin - Javalin started in 169ms \o/
+29 Nov 2021 - 09:45:00.088 [qtp1209770703-20] INFO  com.revature.app.Application - POST request received to the /ers_users/ endpoint
+29 Nov 2021 - 09:45:00.089 [qtp1209770703-20] INFO  com.revature.controller.Controller - Create user method called
+29 Nov 2021 - 09:45:00.385 [qtp1209770703-20] ERROR com.revature.controller.Controller - Cannot create user. Email already taken
+29 Nov 2021 - 09:45:14.777 [qtp1209770703-16] INFO  com.revature.app.Application - POST request received to the /ers_users/ endpoint
+29 Nov 2021 - 09:45:14.777 [qtp1209770703-16] INFO  com.revature.controller.Controller - Create user method called
+29 Nov 2021 - 09:45:14.807 [qtp1209770703-16] INFO  com.revature.controller.Controller - New user created successfully: ERS_user [user_id=4, ers_username=f22a0d116894ba3b3f7d56f4e10c96c76f1098d39ca5ce7de8c350910ba793bd, ers_password=2a389d91c5b11cac79f56f76bc980ae1e590d169f02a6b3036a6ba3d99b44528, user_first_name=Marshall, user_last_name=Hobbs, user_email=marshall2@gmail.com, user_role=employee]

@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -39,18 +40,23 @@ public class ServiceTest {
 	
 	/**********************************************BEGIN CREATE USER TESTS
 	 * @throws SQLException 
-	 * @throws IllegalArgumentException ************************************/
+	 * @throws IllegalArgumentException 
+	 * @throws NoSuchAlgorithmException ************************************/
 	
 	@Test
-	public void createUserPositiveNewEmployee() throws IllegalArgumentException, SQLException {	
+	public void createUserPositiveNewEmployee() throws IllegalArgumentException, SQLException, NoSuchAlgorithmException {	
 		
 		ERS_user newEmployee = new ERS_user("username", "password", "John", "Doe", "email@revature.net", "employee");
 		ERS_user expectedResult = new ERS_user("1809aec60e165c214dd7b02d1f1b42ada7674d6a14ad70ba44ffd7b0641436bf", 
 				"61d1cb660b73116e65aeb8c90a1350bed4ded1e145ba72215e941e778c8f022c", "John", "Doe", "email@revature.net", "employee");
 		
+		newEmployee.setUser_id(1);
+		expectedResult.setUser_id(1);
+		
 		when(mockDao.addUser(eq(newEmployee))).thenReturn(expectedResult);
 		when(mockDao.checkUsernameTaken(eq(newEmployee))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newEmployee))).thenReturn(false);
+		when(mockDao.getUser(eq(1))).thenReturn(expectedResult);
 		
 		assertEquals(expectedResult, sut.createUser(newEmployee));
 		
@@ -58,15 +64,19 @@ public class ServiceTest {
 	}
 	
 	@Test
-	public void createUserPositiveNewManager() throws IllegalArgumentException, SQLException {
+	public void createUserPositiveNewManager() throws IllegalArgumentException, SQLException, NoSuchAlgorithmException {
 		
 		ERS_user newManager = new ERS_user("username2", "passsword2", "John", "Doe", "email2@revature.net", "manager");
 		ERS_user expectedResult = new ERS_user("091e05e30c63fc1d1ad188ce26e2b829dabab647bb388128745abfae88f06cee", 
 				"78f1053bf4fbdf59e29dee7dee93907fb7954ce2702acbb74ba833b1febc65df", "John", "Doe", "email2@revature.net", "manager");
 		
+		newManager.setUser_id(1);
+		expectedResult.setUser_id(1);
+		
 		when(mockDao.addUser(eq(newManager))).thenReturn(expectedResult);
 		when(mockDao.checkUsernameTaken(eq(newManager))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newManager))).thenReturn(false);
+		when(mockDao.getUser(eq(1))).thenReturn(expectedResult);
 		
 		assertEquals(expectedResult, sut.createUser(newManager));
 		
@@ -76,6 +86,7 @@ public class ServiceTest {
 	public void createUserNegativeInvalidUserRole() throws SQLException {
 		
 		ERS_user newUser = new ERS_user("username", "password", "John", "Doe", "email@revature.net", "admin");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -92,6 +103,7 @@ public class ServiceTest {
 	@Test
 	public void createUserNegativeEmptyUsername() throws SQLException {
 		ERS_user newUser = new ERS_user("", "password", "John", "Doe", "email@revature.net", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -101,7 +113,7 @@ public class ServiceTest {
 			
 		});
 		
-		assertEquals("Unable to create new user. Username is empty. Please specify a username", e.getMessage());
+		assertEquals("Cannot create user. Username cannot be null or empty. Please specify a username", e.getMessage());
 		
 	}
 	
@@ -109,6 +121,7 @@ public class ServiceTest {
 	public void createUserNegativeNullUsername() throws SQLException {
 		
 		ERS_user newUser = new ERS_user(null, "password", "John", "Doe", "email@revature.net", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -118,7 +131,7 @@ public class ServiceTest {
 			
 		});
 		
-		assertEquals("Unable to create new user. Username is null. Please specify a username", e.getMessage());
+		assertEquals("Cannot create user. Username cannot be null or empty. Please specify a username", e.getMessage());
 		
 		
 	}
@@ -127,6 +140,7 @@ public class ServiceTest {
 	public void createUserNegativeEmptyPassword() throws SQLException {
 
 		ERS_user newUser = new ERS_user("username", "", "John", "Doe", "email@revature.net", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -136,7 +150,7 @@ public class ServiceTest {
 			
 		});
 		
-		assertEquals("Unable to create new user. Password is empty. Please specify a password", e.getMessage());
+		assertEquals("Cannot create user. Password cannot be null or empty. Please specify a password", e.getMessage());
 		
 		
 	}
@@ -145,6 +159,7 @@ public class ServiceTest {
 	public void createUserNegativeNullPassword() throws SQLException {
 		
 		ERS_user newUser = new ERS_user("username", null, "John", "Doe", "email@revature.net", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -154,13 +169,14 @@ public class ServiceTest {
 			
 		});
 		
-		assertEquals("Unable to create new user. Password is null. Please specify a password", e.getMessage());
+		assertEquals("Cannot create user. Password cannot be null or empty. Please specify a password", e.getMessage());
 		
 	}
 	
 	@Test
 	public void createUserNegativeEmptyFirstname() throws SQLException {
 		ERS_user newUser = new ERS_user("username", "password", "", "Doe", "email@revature.net", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -170,12 +186,13 @@ public class ServiceTest {
 			
 		});
 		
-		assertEquals("Unable to create new user. First name is empty. Please specify a first name", e.getMessage());
+		assertEquals("Cannot create user. First name cannot be null or empty. Please specify a first name", e.getMessage());
 	}
 	
 	@Test
 	public void createUserNegativeNullFirstname() throws SQLException {
 		ERS_user newUser = new ERS_user("username", "password", null, "Doe", "email@revature.net", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -185,12 +202,13 @@ public class ServiceTest {
 			
 		});
 		
-		assertEquals("Unable to create new user. First name is null. Please specify a first name", e.getMessage());
+		assertEquals("Cannot create user. First name cannot be null or empty. Please specify a first name", e.getMessage());
 	}
 	
 	@Test
 	public void createUserNegativeEmptyLastname() throws SQLException {
 		ERS_user newUser = new ERS_user("username", "password", "John", "", "email@revature.net", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -200,12 +218,13 @@ public class ServiceTest {
 			
 		});
 		
-		assertEquals("Unable to create new user. Last name is empty. Please specify a last name", e.getMessage());
+		assertEquals("Cannot create user. Last name cannot be null or empty. Please specify a last name", e.getMessage());
 	}
 	
 	@Test
 	public void createUserNegativeNullLastname() throws SQLException {
 		ERS_user newUser = new ERS_user("username", "password", "John", null, "email@revature.net", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -215,12 +234,13 @@ public class ServiceTest {
 			
 		});
 		
-		assertEquals("Unable to create new user. Last name is null. Please specify a last name", e.getMessage());
+		assertEquals("Cannot create user. Last name cannot be null or empty. Please specify a last name", e.getMessage());
 	}
 	
 	@Test 
 	public void createUserNegativeEmptyEmail() throws SQLException {
 		ERS_user newUser = new ERS_user("username", "password", "John", "Doe", "", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -230,12 +250,13 @@ public class ServiceTest {
 			
 		});
 		
-		assertEquals("Unable to create new user. Email is empty. Please specify an email", e.getMessage());
+		assertEquals("Cannot create user. Email cannot be null or empty. Please specify a valid email.", e.getMessage());
 	}
 	
 	@Test
 	public void createUserNegativeNullEmail() throws SQLException {
 		ERS_user newUser = new ERS_user("username", "password", "John", "Doe", null, "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -245,12 +266,13 @@ public class ServiceTest {
 			
 		});
 		
-		assertEquals("Unable to create new user. Email is null. Please specify an email", e.getMessage());
+		assertEquals("Cannot create user. Email cannot be null or empty. Please specify a valid email.", e.getMessage());
 	}
 	
 	@Test
 	public void createUserNegativeNoEmailDomain() throws SQLException {		//I.e., email give doesn't have an @....com, .net etc. 
 		ERS_user newUser = new ERS_user("username", "password", "John", "Doe", "email", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
@@ -266,6 +288,7 @@ public class ServiceTest {
 	@Test
 	public void createUserNegativeUsernameTaken() throws SQLException {
 		ERS_user newUser = new ERS_user("username", "password", "John", "Doe", "email@revature.net", "employee");
+		newUser.setUser_id(1);
 		
 		
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(true);
@@ -283,6 +306,7 @@ public class ServiceTest {
 	@Test
 	public void createUserNegativeEmailTaken() throws SQLException {
 		ERS_user newUser = new ERS_user("username", "password", "John", "Doe", "email@revature.net", "employee");
+		newUser.setUser_id(1);
 		
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
 		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(true);
@@ -300,8 +324,9 @@ public class ServiceTest {
 	public void createUserNegativeUsernameTooLong() throws SQLException {
 		
 		ERS_user newUser = new ERS_user(tooLongString, "password", "firstname", "lastname", "email@gmail.com", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
-		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(true);
+		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
 		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
 			
@@ -318,8 +343,9 @@ public class ServiceTest {
 	public void createUserNegativePasswordTooLong() throws SQLException {
 		
 		ERS_user newUser = new ERS_user("username", tooLongString, "firstname", "lastname", "email@gmail.com", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
-		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(true);
+		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
 		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
 			
@@ -334,8 +360,9 @@ public class ServiceTest {
 	public void createUserNegativeFirstnameTooLong() throws SQLException {
 		
 		ERS_user newUser = new ERS_user("username", "password", tooLongString, "lastname", "email@gmail.com", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
-		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(true);
+		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
 		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
 			
@@ -351,8 +378,9 @@ public class ServiceTest {
 	public void createUserNegativeLastnameTooLong() throws SQLException {
 		
 		ERS_user newUser = new ERS_user("username", "password", "firstname", tooLongString, "email@gmail.com", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
-		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(true);
+		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
 		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
 			
@@ -368,8 +396,9 @@ public class ServiceTest {
 	public void createUserNegativeEmailTooLong() throws SQLException {
 		
 		ERS_user newUser = new ERS_user("username", "password", "firstname", "lastname", tooLongString + "@gmail.com", "employee");
+		newUser.setUser_id(1);
 		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
-		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(true);
+		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
 		
 		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
 			
@@ -380,6 +409,43 @@ public class ServiceTest {
 		assertEquals("Cannot create user. Email exceeds acceptable number of characters[255]", e.getMessage());
 		
 	}
+	
+	@Test
+	public void createUserNegativeWhitespaceInUsername() throws SQLException {
+		
+		ERS_user newUser = new ERS_user("user name", "password", "firstname", "lastname", "email@gmail.com", "employee" );
+		newUser.setUser_id(1);
+		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
+		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
+		
+		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+			
+			sut.createUser(newUser);
+			
+		});
+		
+		assertEquals("Cannot create user. Username cannot have whitespace between characters.", e.getMessage());
+		
+	}
+	
+	@Test
+	public void createUserNegativeWhitespaceInEmail() throws SQLException {
+		
+		ERS_user newUser = new ERS_user("username", "password", "firstname", "lastname", "ema il@gmail.com", "employee" );
+		newUser.setUser_id(1);
+		when(mockDao.checkUsernameTaken(eq(newUser))).thenReturn(false);
+		when(mockDao.checkEmailTaken(eq(newUser))).thenReturn(false);
+		
+		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+			
+			sut.createUser(newUser);
+			
+		});
+		
+		assertEquals("Cannot create user. Email cannot have whitespace between characters.", e.getMessage());
+		
+	}
+	
 	
 	
 	/*********************************************END CREATE USER TESTS************************************/
@@ -406,15 +472,9 @@ public class ServiceTest {
 	@Test
 	public void deleteUserNegativeUserDoesntExist() throws SQLException {
 		
-		when(mockDao.getUser(eq(1))).thenThrow(new SQLException("No user with that ID"));
+		when(mockDao.deleteUser(eq(1))).thenReturn(false);
 		
-		SQLException e = assertThrows(SQLException.class, () -> {
-			
-			sut.deleteUser(1);
-			
-		});
-		
-		assertEquals("No user with that ID", e.getMessage());
+		assertEquals(false, sut.deleteUser(1));
 		
 	}
 	

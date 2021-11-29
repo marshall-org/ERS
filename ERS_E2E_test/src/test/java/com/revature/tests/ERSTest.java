@@ -1,16 +1,37 @@
 package com.revature.tests;
 
+import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class ERSTest {
+	
+	private WebDriver driver;
 
+	@BeforeAll
+	public void setup() {
+		
+		System.setProperty("webdriver.chrome.driver", "C:/WebDrivers/chromedriver.exe");
+		driver = new ChromeDriver();
+		
+	}
+	
+	@AfterAll
+	public void quit() {
+		
+		driver.quit();
+		
+	}
 	
 	@Given("I am at the login page")
 	public void i_am_at_the_login_page() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	    driver.get("http://revature-project-1.s3-website.us-east-2.amazonaws.com");
 	}
 
 	@When("I select the create new account button")

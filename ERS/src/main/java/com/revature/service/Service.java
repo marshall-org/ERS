@@ -42,62 +42,48 @@ public class Service {
 		
 		//Ok we need to validate the input of newUser. Make sure all the fields are what we want them to be. 
 		
-		//trim username, firstname, lastname, email
-		//not trimming password, because a password should be able to have whitespace at the end/beginning if it wants
-		//We are trimming all these other variables, because theres no reason they should have whitespace
-		newUser.setErs_username(newUser.getErs_username().trim());
-		newUser.setUser_first_name(newUser.getUser_first_name().trim());
-		newUser.setUser_last_name(newUser.getUser_last_name().trim());
-		newUser.setUser_email(newUser.getUser_email().trim());
-		
-		Pattern whitespacePattern = Pattern.compile("\\s");
-		Matcher whitespaceMatcher = whitespacePattern.matcher(newUser.getErs_username());
-		
-		Pattern emailPattern = Pattern.compile("/^\\S+@\\S+\\.\\S+$/"); //This is the same regex I used in the frontend. Hopefully it works here too
-		Matcher emailMatcher = emailPattern.matcher(newUser.getUser_email());
-		
 		
 		//Probably gunna move all this to a helper function. Im probably gunna have to use most of it again anyways for other user altering methods. 
 		
 		if(dao.checkEmailTaken(newUser)) {
 			
-			throw new IllegalArgumentException("Cannot create user. Email already taken");
+			throw new IllegalArgumentException("Unable to create new user. Email is taken. Please specify a different email");
 			
 		} else if(dao.checkUsernameTaken(newUser)) {
 			
-			throw new IllegalArgumentException("Cannot create user. Username already taken");
+			throw new IllegalArgumentException("Unable to create new user. Username is taken. Please specify a different username");
 			
-		} else if (newUser.getUser_role() != "employee" || newUser.getUser_role() != "manager") {
+		} else if ((newUser.getUser_role().compareTo("employee") != 0) && (newUser.getUser_role().compareTo("manager") != 0)) {
 			
-			throw new IllegalArgumentException("Cannot create user. Role is not valid. Must be 'employee' or 'manager'");
+			throw new IllegalArgumentException("Unable to create new user. User role is invalid. Available roles include 'employee' and 'manager'");
 			
-		} else if(newUser.getErs_username() == null || newUser.getErs_username() == "") {
+		} else if(newUser.getErs_username() == null || newUser.getErs_username().compareTo("") == 0) {
 			
-			throw new IllegalArgumentException("Cannot create user. Username cannot be null or empty");
+			throw new IllegalArgumentException("Cannot create user. Username cannot be null or empty. Please specify a username");
 			
-		} else if(whitespaceMatcher.find()) {	//This will return true if username has whitespace in it. We've previously trimmed it, so whitespace now means its inbetween characters. No good. 
+//		} else if(whitespaceMatcher.find()) {	//This will return true if username has whitespace in it. We've previously trimmed it, so whitespace now means its inbetween characters. No good. 
+//			
+//			throw new IllegalArgumentException("Cannot create user. Username cannot have whitespace between characters.");
 			
-			throw new IllegalArgumentException("Cannot create user. Username cannot have whitespace between characters.");
+		} else if(newUser.getErs_password() == null || newUser.getErs_password().compareTo("") == 0) {
 			
-		} else if(newUser.getErs_password() == null || newUser.getErs_password() == "") {
+			throw new IllegalArgumentException("Cannot create user. Password cannot be null or empty. Please specify a password");
 			
-			throw new IllegalArgumentException("Cannot create user. Password cannot be null or empty");
+		} else if(newUser.getUser_first_name() == null || newUser.getUser_first_name().compareTo("") == 0) {
 			
-		} else if(newUser.getErs_username() == null || newUser.getErs_username() == "") {
+			throw new IllegalArgumentException("Cannot create user. First name cannot be null or empty. Please specify a first name");
 			
-			throw new IllegalArgumentException("Cannot create user. First name cannot be null or empty");
+		} else if(newUser.getUser_last_name() == null || newUser.getUser_last_name().compareTo("") == 0) {
 			
-		} else if(newUser.getUser_last_name() == null || newUser.getUser_last_name() == "") {
+			throw new IllegalArgumentException("Cannot create user. Last name cannot be null or empty. Please specify a last name");
 			
-			throw new IllegalArgumentException("Cannot create user. Last name cannot be null or empty");
+		} else if(newUser.getUser_email() == null || newUser.getUser_email().compareTo("") == 0) {
 			
-		} else if(newUser.getUser_email() == null || newUser.getUser_email() == "") {
+			throw new IllegalArgumentException("Cannot create user. Email cannot be null or empty. Please specify a valid email.");
 			
-			throw new IllegalArgumentException("Cannot create user. Email cannot be null or empty");
-			
-		} else if(!emailMatcher.find()) {
-			
-			throw new IllegalArgumentException("Cannot create user. Email is not valid");
+//		} else if(!emailMatcher.find()) {
+//			
+//			throw new IllegalArgumentException("Unable to create new user. Email is not valid. Please specify a valid email with a valid domain name");
 			
 		} else if(newUser.getErs_username().length() > 255) {
 			
@@ -121,16 +107,48 @@ public class Service {
 			
 		}
 		
+		//trim username, firstname, lastname, email
+		//not trimming password, because a password should be able to have whitespace at the end/beginning if it wants
+		//We are trimming all these other variables, because theres no reason they should have whitespace
+		//Gotta trim down here, otherwise will throw exception if trying to trim a null value. We check for null values above
+		newUser.setErs_username(newUser.getErs_username().trim());
+		newUser.setUser_first_name(newUser.getUser_first_name().trim());
+		newUser.setUser_last_name(newUser.getUser_last_name().trim());
+		newUser.setUser_email(newUser.getUser_email().trim());
+		
+		Pattern whitespacePattern = Pattern.compile("\\s");
+		Matcher whitespaceMatcher = whitespacePattern.matcher(newUser.getErs_username());
+		
+		Pattern emailPattern = Pattern.compile("/^\\S+@\\S+\\.\\S+$/"); //This is the same regex I used in the frontend. Hopefully it works here too
+		Matcher emailMatcher = emailPattern.matcher(newUser.getUser_email());
+		
+		if(whitespaceMatcher.find()) {	//This will return true if username has whitespace in it. We've previously trimmed it, so whitespace now means its inbetween characters. No good. 
+			
+		throw new IllegalArgumentException("Cannot create user. Username cannot have whitespace between characters.");
+		
+		} 
+		
+		whitespaceMatcher = whitespacePattern.matcher(newUser.getUser_email());
+		
+		if(whitespaceMatcher.find()) {
+			
+			throw new IllegalArgumentException("Cannot create user. Email cannot have whitespace between characters.");
+			
+		} 
+		
 		//Need to add username/password hashing here
 		//Need to salt with email too
 		
+		String usernameWithSalt = newUser.getErs_username() + newUser.getUser_email();
+		String passwordWithSalt = newUser.getErs_password() + newUser.getUser_email();
+		
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(newUser.getErs_username().getBytes(StandardCharsets.UTF_8));
+		md.update(usernameWithSalt.getBytes(StandardCharsets.UTF_8));
 		byte[] digest = md.digest();
 		
 		newUser.setErs_username(String.format("%064x", new BigInteger(1, digest)));
 		
-		md.update(newUser.getErs_password().getBytes(StandardCharsets.UTF_8));
+		md.update(passwordWithSalt.getBytes(StandardCharsets.UTF_8));
 		byte[] digest2 = md.digest();
 		
 		newUser.setErs_password(String.format("%064x", new BigInteger(1, digest2)));
@@ -139,6 +157,8 @@ public class Service {
 		
 		newUser = dao.addUser(newUser);
 		ERS_user returnUser = dao.getUser(newUser.getUser_id());
+		returnUser.setErs_password("");
+		returnUser.setErs_username("");
 		return returnUser;
 		
 		
@@ -151,10 +171,10 @@ public class Service {
 	}
 	
 	
-	public boolean deleteUser(int user_id) {
+	public boolean deleteUser(int user_id) throws SQLException {
 		
-		//method stub
-		return false; 
+		return dao.deleteUser(user_id);
+	
 		
 	}
 	

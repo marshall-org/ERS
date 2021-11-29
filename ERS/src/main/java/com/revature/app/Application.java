@@ -15,7 +15,7 @@ public class Application {
 	public static void main(String[] args) {
 		
 		
-		DAL.establishConnection(System.getenv("db_url"), System.getenv("db_username"), System.getenv("db_password"));
+		System.out.println(DAL.establishConnection(System.getenv("db_url"), System.getenv("db_username"), System.getenv("db_password")));
 		
 		Javalin app = Javalin.create((config) -> {
 			
